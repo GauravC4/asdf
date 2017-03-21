@@ -4,12 +4,18 @@
     android:layout_height="match_parent"
     tools:context="com.mrc.gaurav.asdf.Profile">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:id="@+id/Profile_fragment"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:text="Notifications"
+        android:id="@+id/heading"/>
+
+    <ListView
+        android:id="@+id/notification_list"
+        android:layout_width="fill_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="..............this is profile fragment.........." />
+        android:layout_below="@+id/heading"
+        android:divider="@null" />
 
 </RelativeLayout>
