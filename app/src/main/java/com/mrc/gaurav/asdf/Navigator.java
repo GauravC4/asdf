@@ -1,11 +1,13 @@
 package com.mrc.gaurav.asdf;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -81,11 +83,28 @@ public class Navigator extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_logout) {
-            SharedPreferences sp = getApplicationContext().getSharedPreferences("your_prefs",MODE_PRIVATE);
-            SharedPreferences.Editor editor = sp.edit();
-            editor.clear();
-            finish();
-            startActivity(new Intent(Navigator.this,LoginActivity.class));
+
+            AlertDialog alertDialog = new AlertDialog.Builder(Navigator.this)
+                    .setTitle("Logout?")
+                    .setMessage("Are you sure you want to Logout?")
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // continue with logout
+                            SharedPreferences sp = getApplicationContext().getSharedPreferences("your_prefs",MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sp.edit();
+                            editor.clear();
+                            editor.apply();
+                            finish();
+                            startActivity(new Intent(Navigator.this,LoginActivity.class));
+                        }
+                    })
+                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // do nothing
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
         }
 
         return super.onOptionsItemSelected(item);

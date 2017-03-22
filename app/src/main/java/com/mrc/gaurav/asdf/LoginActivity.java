@@ -2,12 +2,14 @@ package com.mrc.gaurav.asdf;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.net.http.HttpResponseCache;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -47,6 +49,11 @@ public class LoginActivity extends AppCompatActivity {
         editTextUserName = (EditText) findViewById(R.id.login_username);
         editTextPassword = (EditText) findViewById(R.id.login_password);
         SharedPreferences sp = getSharedPreferences("your_prefs", this.MODE_PRIVATE);
+        if(sp.contains("username"))
+        {
+            finish();
+            startActivity(new Intent(LoginActivity.this,Navigator.class));
+        }
 
 
         login.setOnClickListener(new View.OnClickListener() {
@@ -67,6 +74,22 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(this)
+                .setTitle("Really Exit?")
+                .setMessage("Are you sure you want to exit?")
+                .setNegativeButton(android.R.string.no, null)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        LoginActivity.super.onBackPressed();
+                    }
+                }).create().show();
+    }
+
+
 
     void authenticate(){
 
