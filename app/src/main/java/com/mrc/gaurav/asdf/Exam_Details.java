@@ -1,11 +1,15 @@
 package com.mrc.gaurav.asdf;
 
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 
 /**
@@ -22,7 +26,17 @@ public class Exam_Details extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        SharedPreferences sp = getActivity().getSharedPreferences("your_prefs",getActivity().MODE_PRIVATE);
+        if(!sp.contains("username"))
+        {
+            getActivity().finish();
+            startActivity(new Intent(getActivity(),LoginActivity.class));
+
+        }
+
         // Inflate the layout for this fragment
+        Toast.makeText(this.getContext(),sp.getString("username",""),Toast.LENGTH_LONG).show();
         return inflater.inflate(R.layout.fragment_exam__details, container, false);
     }
 

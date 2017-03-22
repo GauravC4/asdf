@@ -5,7 +5,9 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.net.http.HttpResponseCache;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,6 +15,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -30,8 +36,7 @@ public class LoginActivity extends AppCompatActivity {
     Button login;
     private EditText editTextUserName; private EditText editTextPassword;
     String username, password;
-    SharedPreferences sp;
-    SharedPreferences.Editor editor ;
+    JSONArray result_json_array;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,8 +46,8 @@ public class LoginActivity extends AppCompatActivity {
         login = (Button)findViewById(R.id.login_button);
         editTextUserName = (EditText) findViewById(R.id.login_username);
         editTextPassword = (EditText) findViewById(R.id.login_password);
-        sp = getSharedPreferences("your_prefs", this.MODE_PRIVATE);
-        editor = sp.edit();
+        SharedPreferences sp = getSharedPreferences("your_prefs", this.MODE_PRIVATE);
+
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,7 +87,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 URL url = null;
                 try {
-                    url = new URL("http://intruding-decay.000webhostapp.com/authenticate.php");
+                    url = new URL("http://gauravc4.16mb.com/authenticate.php");
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
                 }
@@ -119,8 +124,15 @@ public class LoginActivity extends AppCompatActivity {
                             sb.append(line);
                         }
                         result = sb.toString();
+
+                        /*for (int i = 0; i < result_json.length(); i++) {
+                            JSONObject jsonobject = jsonarray.getJSONObject(i);
+                            String name = jsonobject.getString("name");
+                            String url = jsonobject.getString("url");
+                        }*/
+
                     }else{
-                        result="unsucessfull";
+                        result="unsucessful";
                     }
                 } catch (MalformedURLException e) {
                     e.printStackTrace(); result="Error Connecting Server"+e;
@@ -133,13 +145,27 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             protected void onPostExecute(String result){
-                String[] separated = result.split(":");
+                //String[] separated = result.split(":");
                 loadingDialog.dismiss();
-                if(separated[0].equalsIgnoreCase("success")){
+                if(!result.equalsIgnoreCase("unsuccessful")){
+                    try{
 
-                    editor.putString("prof_det1", separated[1]);
-                    editor.putString("prof_det2", separated[2]);
-                    editor.commit();
+                        SharedPreferences sp = getApplicationContext().getSharedPreferences("your_prefs", getApplicationContext().MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sp.edit();
+                        result_json_array = new JSONArray(result);
+                        JSONObject result_json_obj = result_json_array.getJSONObject(0);
+                        editor.putString("username", result_json_obj.getString("username"));
+                        Log.d("place",result_json_obj.getString("username"));
+                        editor.putString("password", result_json_obj.getString("password"));
+                        Log.d("place",result_json_obj.getString("password"));
+                        editor.apply();
+
+
+                    }catch(JSONException e)
+                    {
+                        Log.d("place",e.toString());
+                        e.printStackTrace();
+                    }
 
                     Intent navigator = new Intent(LoginActivity.this, Navigator.class);
                     startActivity(navigator);
@@ -147,7 +173,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 }else {
                     Log.d("result:",result);
-                    Toast.makeText(LoginActivity.this, result, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, result+ " fail", Toast.LENGTH_SHORT).show();
                 }
             }
         }
