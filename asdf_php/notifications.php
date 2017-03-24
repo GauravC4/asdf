@@ -23,6 +23,17 @@ if ($conn) {
     		$response[$i]['password'] = $row['password'];
     		$response[$i]['duty_amount'] = $row['duty_amount'];
 
+    		$sql2 = 'SELECT * FROM `notifications`';
+    		$retval2 = mysqli_query($conn,$sql2);
+    		if(mysqli_num_rows($retval2) > 0){
+    			while($row2 = mysqli_fetch_assoc($retval2)){
+
+    				$i++;
+    				$response[$i]['date'] = $row2['date'];
+    				$response[$i]['message'] = $row2['message'];
+    			}
+    		}
+
 	    	/*$alot_prim = $row['prim']; 
 	    	$allot_examid = $row['exam_id']; 
 	    	$allot_pos = $row['position'];

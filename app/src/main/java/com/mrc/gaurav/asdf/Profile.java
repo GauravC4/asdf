@@ -13,8 +13,10 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.mrc.gaurav.asdf.adapter.FeedListAdapter;
 import com.mrc.gaurav.asdf.app.AppController;
 import com.mrc.gaurav.asdf.data.FeedItem;
@@ -24,7 +26,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.android.volley.toolbox.JsonArrayRequest;
 
@@ -37,7 +41,8 @@ public class Profile extends Fragment {
     private FeedListAdapter listAdapter;
     private List<FeedItem> feedItems;
     private String URL_FEED = "http://gauravc4.16mb.com/notifications.php";
-
+    private String username;
+    private JSONArray result_json_array;
     public Profile() {
         // Required empty public constructor
     }
@@ -48,11 +53,13 @@ public class Profile extends Fragment {
                              Bundle savedInstanceState) {
 
         SharedPreferences sp = getActivity().getSharedPreferences("your_prefs",getActivity().MODE_PRIVATE);
-        if(!sp.contains("username"))
-        {
+        if(!sp.contains("username")){
             getActivity().finish();
             startActivity(new Intent(getActivity(),LoginActivity.class));
 
+        }
+        else{
+            username = sp.getString("username","");
         }
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_profile, container, false);
@@ -61,7 +68,7 @@ public class Profile extends Fragment {
         return v;
     }
 
-    void feed(View v){
+    void feed(View v) {
 
         listView = (ListView) v.findViewById(R.id.notification_list);
 
@@ -70,52 +77,60 @@ public class Profile extends Fragment {
         listAdapter = new FeedListAdapter(getActivity(), feedItems);
         listView.setAdapter(listAdapter);
 
-        final ProgressDialog loading = ProgressDialog.show(getContext(),"Loading Data", "Please wait...",false,false);
+        final ProgressDialog loading = ProgressDialog.show(getContext(), "Loading Data", "Please wait...", false, false);
 
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(URL_FEED,
-                new Response.Listener<JSONArray>() {
+        StringRequest strRequest = new StringRequest(Request.Method.POST, URL_FEED,
+                new Response.Listener<String>() {
                     @Override
-                    public void onResponse(JSONArray response) {
-                        //Dismissing progress dialog
-                        loading.dismiss();
+                    public void onResponse(String response) {
+                        //Toast.makeText(getActivity(), response, Toast.LENGTH_SHORT).show();
+                        try{
+                            result_json_array = new JSONArray(response);
 
-                        //calling method to parse json array
-                        parseJsonFeed(response);
+                            for (int i = 0; i < result_json_array.length(); i++) {
+
+                                FeedItem item = new FeedItem();
+                                JSONObject feedObj = null;
+
+                                    feedObj = result_json_array.getJSONObject(i);
+                                    Log.d("place",feedObj.toString());
+                                    if(i == 0){
+                                        item.setNotificationDate(feedObj.getString("prim"));
+                                        item.setNotificationText(feedObj.getString("username"));
+                                    }
+                                    else {
+                                        item.setNotificationDate(feedObj.getString("date"));
+                                        item.setNotificationText(feedObj.getString("message"));
+                                    }
+
+                                    loading.dismiss();
+
+                                feedItems.add(item);
+                            }
+
+                            listAdapter.notifyDataSetChanged();
+
+                        }catch(JSONException e){
+                            e.printStackTrace();
+                        }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        loading.dismiss();
-                        error.printStackTrace();
+                        Toast.makeText(getActivity(), error.toString(), Toast.LENGTH_SHORT).show();
                     }
-                });
-
-        AppController.getInstance().addToRequestQueue(jsonArrayRequest);
-
-    }
-
-    private void parseJsonFeed(JSONArray response) {
-
-        for (int i = 0; i < response.length(); i++) {
-
-            FeedItem item = new FeedItem();
-            JSONObject feedObj = null;
-
-            try{
-                feedObj = response.getJSONObject(i);
-
-                item.setNotificationId(feedObj.getString("nid"));
-                item.setNotificationText(feedObj.getString("ntext"));
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("username", username);
+                return params;
             }
-            catch (JSONException e) {
-                e.printStackTrace();
-            }
+        };
 
-            feedItems.add(item);
-        }
+        AppController.getInstance().addToRequestQueue(strRequest);
 
-        listAdapter.notifyDataSetChanged();
     }
 
 }

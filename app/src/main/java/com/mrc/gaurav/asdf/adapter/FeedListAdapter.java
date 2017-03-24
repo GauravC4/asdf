@@ -47,13 +47,13 @@ public class FeedListAdapter extends BaseAdapter {
         if (convertView == null)
             convertView = inflater.inflate(R.layout.feed_item, null);
 
-        TextView notification_id = (TextView) convertView.findViewById(R.id.nid);
+        TextView notification_date = (TextView) convertView.findViewById(R.id.ndate);
         TextView notification_text = (TextView) convertView.findViewById(R.id.ntext);
 
         final FeedItem item = feedItems.get(position);
 
         notification_text.setText(item.getNotificationText());
-        notification_id.setText(item.getNotificationId());
+        notification_date.setText(item.getNotificationDate());
 
         return convertView;
     }

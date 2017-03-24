@@ -16,6 +16,8 @@ import android.view.ViewGroup;
 public class Allotment extends Fragment {
 
 
+    private String username;
+
     public Allotment() {
         // Required empty public constructor
     }
@@ -32,6 +34,9 @@ public class Allotment extends Fragment {
             getActivity().finish();
             startActivity(new Intent(getActivity(),LoginActivity.class));
 
+        }
+        else{
+            username = sp.getString("username","");
         }
         return inflater.inflate(R.layout.fragment_allotment, container, false);
     }

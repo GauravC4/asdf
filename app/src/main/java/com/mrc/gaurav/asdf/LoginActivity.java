@@ -61,7 +61,8 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 username = editTextUserName.getText().toString();
-                password = editTextPassword.getText().toString(); Log.d("place","login onclick");
+                password = editTextPassword.getText().toString();
+                Log.d("place","login onclick");
 
 
                 if(username.length() != 0){
@@ -88,8 +89,6 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 }).create().show();
     }
-
-
 
     void authenticate(){
 

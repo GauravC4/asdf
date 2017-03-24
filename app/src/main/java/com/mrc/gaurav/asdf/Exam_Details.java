@@ -18,6 +18,8 @@ import android.widget.Toast;
 public class Exam_Details extends Fragment {
 
 
+    private String username;
+
     public Exam_Details() {
         // Required empty public constructor
     }
@@ -33,6 +35,9 @@ public class Exam_Details extends Fragment {
             getActivity().finish();
             startActivity(new Intent(getActivity(),LoginActivity.class));
 
+        }
+        else{
+            username = sp.getString("username","");
         }
 
         // Inflate the layout for this fragment

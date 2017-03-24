@@ -6,14 +6,16 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#f4f4f4">
+        android:background="#f4f4f4"
+        android:layout_marginTop="15dp"
+        style="@style/Base.ThemeOverlay.AppCompat.Dark">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/nid"
+            android:id="@+id/ndate"
             android:textSize="16sp"
-            android:text="ID"
+            android:text="DATE"
             android:padding="@dimen/activity_horizontal_margin"
             android:layout_alignParentTop="true"
             android:layout_alignParentStart="true"
@@ -26,7 +28,7 @@
             android:textSize="15sp"
             android:text="TEXT"
             android:padding="@dimen/activity_horizontal_margin"
-            android:layout_below="@+id/nid"
+            android:layout_below="@+id/ndate"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true" />
 
