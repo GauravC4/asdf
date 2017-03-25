@@ -48,6 +48,7 @@ public class LoginActivity extends AppCompatActivity {
         login = (Button)findViewById(R.id.login_button);
         editTextUserName = (EditText) findViewById(R.id.login_username);
         editTextPassword = (EditText) findViewById(R.id.login_password);
+
         SharedPreferences sp = getSharedPreferences("your_prefs", this.MODE_PRIVATE);
         if(sp.contains("username"))
         {
@@ -62,14 +63,14 @@ public class LoginActivity extends AppCompatActivity {
 
                 username = editTextUserName.getText().toString();
                 password = editTextPassword.getText().toString();
-                Log.d("place","login onclick");
+                Log.d("loginActivity","login onclick");
 
 
                 if(username.length() != 0){
-                    Log.d("place","initiate authentication");
+                    Log.d("loginActivity","initiate authentication");
                     authenticate();
                 }else{
-                    Log.d("place","invalid input"+username+"pass:"+password);
+                    Log.d("loginActivity","invalid input"+username+"pass:"+password);
                     Toast.makeText(LoginActivity.this, "Invalid Input", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -147,12 +148,6 @@ public class LoginActivity extends AppCompatActivity {
                         }
                         result = sb.toString();
 
-                        /*for (int i = 0; i < result_json.length(); i++) {
-                            JSONObject jsonobject = jsonarray.getJSONObject(i);
-                            String name = jsonobject.getString("name");
-                            String url = jsonobject.getString("url");
-                        }*/
-
                     }else{
                         result="unsucessful";
                     }
@@ -167,7 +162,6 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             protected void onPostExecute(String result){
-                //String[] separated = result.split(":");
                 loadingDialog.dismiss();
                 if(!result.equalsIgnoreCase("unsuccessful")){
                     try{
@@ -177,16 +171,15 @@ public class LoginActivity extends AppCompatActivity {
                         result_json_array = new JSONArray(result);
                         JSONObject result_json_obj = result_json_array.getJSONObject(0);
                         editor.putString("username", result_json_obj.getString("username"));
-                        Log.d("place",result_json_obj.getString("username"));
+                        Log.d("loginActivity",result_json_obj.getString("username"));
                         editor.putString("password", result_json_obj.getString("password"));
-                        Log.d("place",result_json_obj.getString("password"));
+                        Log.d("loginActivity",result_json_obj.getString("password"));
+                        editor.putString("type",result_json_obj.getString("type"));
                         editor.apply();
-
 
                     }catch(JSONException e)
                     {
-                        Log.d("place",e.toString());
-                        e.printStackTrace();
+                        Log.d("loginActivity",e.toString());
                     }
 
                     Intent navigator = new Intent(LoginActivity.this, Navigator.class);
@@ -194,13 +187,13 @@ public class LoginActivity extends AppCompatActivity {
                     finish();
 
                 }else {
-                    Log.d("result:",result);
+                    Log.d("loginActivity",result);
                     Toast.makeText(LoginActivity.this, result+ " fail", Toast.LENGTH_SHORT).show();
                 }
             }
         }
 
-        Log.d("place","authenticate");
+        Log.d("loginActivity","authenticate");
         LoginAsync la = new LoginAsync();
         la.execute(username, password);
 

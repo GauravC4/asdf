@@ -18,6 +18,10 @@
             android:id="@+id/allotment"
             android:icon="@drawable/ic_allotment"
             android:title="Allotment" />
+
+        <item
+            android:id="@+id/generate_notifications"
+            android:title="Generate Notifications" />
     </group>
 
     <item android:title="Communicate">

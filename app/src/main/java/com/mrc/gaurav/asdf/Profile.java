@@ -59,12 +59,12 @@ public class Profile extends Fragment {
 
         }
         else{
-            username = sp.getString("username","");
+            username = sp.getString("username","no value found");
+            Log.d("profile",username);
         }
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_profile, container, false);
         feed(v);
-        Toast.makeText(this.getContext(),sp.getString("username",""),Toast.LENGTH_LONG).show();
         return v;
     }
 
@@ -83,7 +83,6 @@ public class Profile extends Fragment {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        //Toast.makeText(getActivity(), response, Toast.LENGTH_SHORT).show();
                         try{
                             result_json_array = new JSONArray(response);
 
@@ -93,7 +92,7 @@ public class Profile extends Fragment {
                                 JSONObject feedObj = null;
 
                                     feedObj = result_json_array.getJSONObject(i);
-                                    Log.d("place",feedObj.toString());
+                                    Log.d("profile",feedObj.toString());
                                     if(i == 0){
                                         item.setNotificationDate(feedObj.getString("prim"));
                                         item.setNotificationText(feedObj.getString("username"));
@@ -118,7 +117,7 @@ public class Profile extends Fragment {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getActivity(), error.toString(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), error.toString(), Toast.LENGTH_LONG).show();
                     }
                 }) {
             @Override
@@ -128,7 +127,7 @@ public class Profile extends Fragment {
                 return params;
             }
         };
-
+        loading.dismiss();
         AppController.getInstance().addToRequestQueue(strRequest);
 
     }

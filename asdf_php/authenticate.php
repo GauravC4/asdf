@@ -28,6 +28,7 @@ if(mysqli_num_rows($retval) > 0){
 	        $result[0]['username']=$row['username']; 
 	        $result[0]['password']=$row['password']; 
 	        $result[0]['duty_amount']=$row['duty_amount'];
+	        $result[0]['type']=$row['type'];
 			break;
 		}	
 	}
