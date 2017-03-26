@@ -17,6 +17,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
+import android.widget.Toast;
 
 public class Navigator extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -24,6 +26,7 @@ public class Navigator extends AppCompatActivity
     NavigationView navigationView = null;
     Toolbar toolbar = null;
     private String username;
+    private String password;
     private String type;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,7 +95,7 @@ public class Navigator extends AppCompatActivity
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             // continue with logout
-                            SharedPreferences sp = getApplicationContext().getSharedPreferences("your_prefs",MODE_PRIVATE);
+                            SharedPreferences sp = getSharedPreferences("your_prefs",MODE_PRIVATE);
                             SharedPreferences.Editor editor = sp.edit();
                             editor.clear();
                             editor.apply();
@@ -107,6 +110,38 @@ public class Navigator extends AppCompatActivity
                     })
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();
+        }
+        else if(id == R.id.action_allot){
+
+            AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+            alert.setTitle("Authenticate Admin");
+            alert.setMessage("Enter password:");
+
+            final EditText input = new EditText(this);
+            alert.setView(input);
+
+            alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+
+                    SharedPreferences sp = getSharedPreferences("your_prefs",MODE_PRIVATE);
+                    password = sp.getString("password","");
+                    if(input.getText().toString().trim().equalsIgnoreCase(password)){
+                        Toast.makeText(Navigator.this,"Allotment can be done now!!!",Toast.LENGTH_LONG).show();
+                    }
+                    else{
+                        Toast.makeText(Navigator.this,"Not admin!",Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
+
+            alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    // do nothing
+                }
+            });
+
+            alert.show();
         }
 
         return super.onOptionsItemSelected(item);
