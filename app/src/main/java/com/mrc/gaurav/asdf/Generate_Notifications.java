@@ -55,54 +55,32 @@ public class Generate_Notifications extends Fragment {
             getActivity().finish();
             startActivity(new Intent(getActivity(), LoginActivity.class));
 
-        } else {
-            username = sp.getString("username", "");
-            type = sp.getString("type", "user");
-
-            if (!type.equalsIgnoreCase("admin")) {
-                new AlertDialog.Builder(getActivity())
-                        .setTitle("Not Admin ?")
-                        .setMessage("Sorry you lack admin privileges required to perform this operation !")
-                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-
-                                getActivity().finish();
-                                getActivity().startActivity(new Intent(getActivity(),Navigator.class));
-                                /*Profile fragment = new Profile();
-                                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                                fragmentTransaction.replace(R.id.generate_notifications, fragment);
-                                fragmentTransaction.addToBackStack(null);
-                                fragmentTransaction.commit();*/
-                                //got to profile
-                                //flag = true;
-                                //getActivity().getSupportFragmentManager().popBackStack();
-                                /*getActivity().finish();
-                                startActivity(new Intent(getActivity(), Profile.class));*/
-                            }
-                        })
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .show();
-            }
         }
             View v = inflater.inflate(R.layout.fragment_generate__notifications, container, false);
             generate = (Button) v.findViewById(R.id.generate);
+            getMessage = (EditText) v.findViewById(R.id.message);
+
             generate.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                        feed(v);
+                        checkText(v);
                 }
             });
             return v;
     }
 
-    void feed(View v) {
-
-        getMessage = (EditText) getActivity().findViewById(R.id.message);
+    void checkText(View v)
+    {
         message = getMessage.getText().toString();
-
         if(message.equalsIgnoreCase(""))
             Toast.makeText(getActivity(),"Please enter a valid message",Toast.LENGTH_LONG).show();
+        else
+            feed(v);
+    }
+
+
+    void feed(View v) {
+
         final ProgressDialog loading = ProgressDialog.show(getContext(), "Loading Data", "Please wait...", false, false);
 
         StringRequest strRequest = new StringRequest(Request.Method.POST, URL_FEED,

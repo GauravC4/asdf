@@ -23,6 +23,8 @@ public class Navigator extends AppCompatActivity
 
     NavigationView navigationView = null;
     Toolbar toolbar = null;
+    private String username;
+    private String type;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -145,10 +147,37 @@ public class Navigator extends AppCompatActivity
             fragmentTransaction.commit();
 
         } else if (id == R.id.generate_notifications) {
-            Generate_Notifications fragment = new Generate_Notifications();
-            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.fragment_container, fragment);
-            fragmentTransaction.commit();
+
+
+            SharedPreferences sp = getSharedPreferences("your_prefs", MODE_PRIVATE);
+            if (!sp.contains("username")) {
+                finish();
+                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+
+            } else {
+                username = sp.getString("username", "");
+                type = sp.getString("type", "user");
+
+                if (!type.equalsIgnoreCase("admin")) {
+                    new AlertDialog.Builder(Navigator.this)
+                            .setTitle("Not Admin ?")
+                            .setMessage("Sorry you lack admin privileges required to perform this operation !")
+                            .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                    //do nothing
+                                }
+                            })
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .show();
+                }
+                else{
+                    Generate_Notifications fragment = new Generate_Notifications();
+                    FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.fragment_container, fragment);
+                    fragmentTransaction.commit();
+                }
+            }
 
         } else if (id == R.id.nav_send) {
 

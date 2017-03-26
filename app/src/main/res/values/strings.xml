@@ -18,6 +18,6 @@
     <string-array name="pref_options">
         <item>none</item>
         <item>prefer</item>
-        <item>notprefer</item>
+        <item>not prefered</item>
     </string-array>
 </resources>

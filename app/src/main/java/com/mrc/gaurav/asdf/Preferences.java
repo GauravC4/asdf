@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +37,9 @@ public class Preferences extends Fragment {
     private List<FeedItem_pref> feedItems;
     private String URL_FEED = "http://intruding-decay.000webhostapp.com/pref_test.php";
     private String username;
+    private ProgressDialog loading;
+           // ProgressDialog.show(getContext(),"Loading Data","Please Wait ...");
+   // private final ProgressDialog loading = ProgressDialog.show(getActivity(),"Loading Data", "Please wait...",false,false);
 
     public Preferences() {
         // Required empty public constructor
@@ -48,7 +52,7 @@ public class Preferences extends Fragment {
         View v = inflater.inflate(R.layout.fragment_preferences, container, false);
 
         SharedPreferences sp = getActivity().getSharedPreferences("your_prefs",getActivity().MODE_PRIVATE);
-        if(sp.contains("username"))
+        if(!sp.contains("username"))
         {
             getActivity().finish();
             startActivity(new Intent(getActivity(),Navigator.class));
@@ -61,6 +65,13 @@ public class Preferences extends Fragment {
         return v;
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(loading!=null && loading.isShowing())
+            loading.dismiss();
+    }
+
     void feed(View v){
 
         listView = (ListView) v.findViewById(R.id.preferences_list);
@@ -70,23 +81,28 @@ public class Preferences extends Fragment {
         listAdapter = new FeedListAdapter_pref(getActivity(), feedItems);
         listView.setAdapter(listAdapter);
 
-        final ProgressDialog loading = ProgressDialog.show(getContext(),"Loading Data", "Please wait...",false,false);
+        loading = new ProgressDialog(getContext());
+        loading.setTitle("Loading Data");
+        loading.setMessage("Please Wait....");
+        loading.show();
 
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(URL_FEED,
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        //Dismissing progress dialog
-                        loading.dismiss();
 
-                        //calling method to parse json array
+                        Log.d("Pref",""+response);
+                        if(loading!=null && loading.isShowing())
+                            loading.dismiss();
                         parseJsonFeed(response);
+
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        loading.dismiss();
+                        if(loading!=null && loading.isShowing())
+                            loading.dismiss();
                         error.printStackTrace();
                     }
                 });
