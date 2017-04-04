@@ -35,10 +35,10 @@ import java.net.URL;
 
 public class LoginActivity extends AppCompatActivity {
 
-    Button login;
+    private Button login;
     private EditText editTextUserName; private EditText editTextPassword;
-    String username, password;
-    JSONArray result_json_array;
+    private String username, password;
+    private JSONArray result_json_array;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
