@@ -1,5 +1,6 @@
 package com.mrc.gaurav.asdf;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -20,6 +21,13 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
 public class Navigator extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -28,6 +36,7 @@ public class Navigator extends AppCompatActivity
     private String username;
     private String password;
     private String type;
+    private String URL = "http://gauravc4.16mb.com/allot.php";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -127,7 +136,33 @@ public class Navigator extends AppCompatActivity
                     SharedPreferences sp = getSharedPreferences("your_prefs",MODE_PRIVATE);
                     password = sp.getString("password","");
                     if(input.getText().toString().trim().equalsIgnoreCase(password)){
-                        Toast.makeText(Navigator.this,"Allotment can be done now!!!",Toast.LENGTH_LONG).show();
+                        Toast.makeText(Navigator.this,"Allotment process started!!!",Toast.LENGTH_LONG).show();
+
+                        RequestQueue requestQueue = Volley.newRequestQueue(Navigator.this);
+
+                        // start showing process dialog box
+                        final ProgressDialog loading = ProgressDialog.show(Navigator.this,"Loading","Please Wait...",false,false);
+
+                        //send username and password to php using post
+                        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL,
+                                new Response.Listener<String>() {
+                                    @Override
+                                    public void onResponse(String response) {
+                                        //parse response
+                                    }
+                                },
+                                new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        Toast.makeText(Navigator.this,error.toString(),Toast.LENGTH_LONG).show();
+                                        error.printStackTrace();
+                                    }
+                                })
+                        {
+                        };
+                        requestQueue.add(stringRequest);
+                        //hide loading box
+                        loading.dismiss();
                     }
                     else{
                         Toast.makeText(Navigator.this,"Not admin!",Toast.LENGTH_LONG).show();
