@@ -170,6 +170,7 @@ public class LoginActivity extends AppCompatActivity {
                         SharedPreferences.Editor editor = sp.edit();
                         result_json_array = new JSONArray(result);
                         JSONObject result_json_obj = result_json_array.getJSONObject(0);
+                        editor.putString("prim", result_json_obj.getString("id"));
                         editor.putString("username", result_json_obj.getString("username"));
                         Log.d("loginActivity",result_json_obj.getString("username"));
                         editor.putString("password", result_json_obj.getString("password"));
