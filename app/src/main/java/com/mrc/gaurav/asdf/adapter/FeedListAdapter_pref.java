@@ -101,11 +101,11 @@ public class FeedListAdapter_pref extends BaseAdapter {
         final int spinner1_selection, spinner2_selection;
 
         //spinner set selections
-        if(pref_slot1.equals("leave") || pref_slot1.equals("pref_n")){
+        if(pref_slot1.equals("2")){
             spinner1.setSelection(2);
             feed_item_pref.setBackgroundColor(Color.parseColor("#e9cfec"));
             spinner1_selection = 2;
-        }else if(pref_slot1.equals("pref_y")){
+        }else if(pref_slot1.equals("1")){
             spinner1.setSelection(1);
             feed_item_pref.setBackgroundColor(Color.parseColor("#e9cfec"));
             spinner1_selection = 1;
@@ -114,11 +114,11 @@ public class FeedListAdapter_pref extends BaseAdapter {
             spinner1_selection = 0;
         }
 
-        if(pref_slot2.equals("leave") || pref_slot2.equals("pref_n")){
+        if(pref_slot2.equals("2")){
             spinner2.setSelection(2);
             feed_item_pref.setBackgroundColor(Color.parseColor("#e9cfec"));
             spinner2_selection = 2;
-        }else if(pref_slot2.equals("pref_y")){
+        }else if(pref_slot2.equals("1")){
             spinner2.setSelection(1);
             feed_item_pref.setBackgroundColor(Color.parseColor("#e9cfec"));
             spinner2_selection = 1;
@@ -177,7 +177,7 @@ public class FeedListAdapter_pref extends BaseAdapter {
 
                 URL url = null;
                 try {
-                    url = new URL("http://intruding-decay.000webhostapp.com/update_pref.php");
+                    url = new URL("http://gauravc4.16mb.com/preferences.php");
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
                 }
@@ -191,7 +191,8 @@ public class FeedListAdapter_pref extends BaseAdapter {
                     Uri.Builder builder = new Uri.Builder()
                             .appendQueryParameter("option_position", option_position)
                             .appendQueryParameter("pref_id", pref_id)
-                            .appendQueryParameter("slot", slot);
+                            .appendQueryParameter("slot", slot)
+                            .appendQueryParameter("pref_input","1");
                     String query = builder.build().getEncodedQuery();
 
 

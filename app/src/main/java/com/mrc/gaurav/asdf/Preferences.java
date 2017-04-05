@@ -11,12 +11,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.mrc.gaurav.asdf.adapter.FeedListAdapter_pref;
 import com.mrc.gaurav.asdf.app.AppController;
+import com.mrc.gaurav.asdf.data.FeedItem;
 import com.mrc.gaurav.asdf.data.FeedItem_pref;
 
 import org.json.JSONArray;
@@ -24,7 +29,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -35,8 +42,9 @@ public class Preferences extends Fragment {
     private ListView listView;
     private FeedListAdapter_pref listAdapter;
     private List<FeedItem_pref> feedItems;
-    private String URL_FEED = "http://intruding-decay.000webhostapp.com/pref_test.php";
+    private String URL_FEED = "http://gauravc4.16mb.com/preferences.php";
     private String username;
+    private  String type, prof_id;
     private ProgressDialog loading;
            // ProgressDialog.show(getContext(),"Loading Data","Please Wait ...");
    // private final ProgressDialog loading = ProgressDialog.show(getActivity(),"Loading Data", "Please wait...",false,false);
@@ -59,6 +67,8 @@ public class Preferences extends Fragment {
         }
         else{
             username = sp.getString("username","");
+            prof_id = sp.getString("prim","");
+            type = sp.getString("type","");
         }
 
         feed(v);
@@ -86,28 +96,37 @@ public class Preferences extends Fragment {
         loading.setMessage("Please Wait....");
         loading.show();
 
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(URL_FEED,
-                new Response.Listener<JSONArray>() {
+        StringRequest strRequest = new StringRequest(Request.Method.POST, URL_FEED,
+                new Response.Listener<String>() {
                     @Override
-                    public void onResponse(JSONArray response) {
+                    public void onResponse(String response) {
+                        try{
 
-                        Log.d("Pref",""+response);
-                        if(loading!=null && loading.isShowing())
-                            loading.dismiss();
-                        parseJsonFeed(response);
+                            JSONArray result = new JSONArray(response);
+                            parseJsonFeed(result);
 
+                        }catch(JSONException e){
+                            e.printStackTrace();
+                        }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        if(loading!=null && loading.isShowing())
-                            loading.dismiss();
-                        error.printStackTrace();
+                        Toast.makeText(getActivity(), error.toString(), Toast.LENGTH_LONG).show();
                     }
-                });
-
-        AppController.getInstance().addToRequestQueue(jsonArrayRequest);
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("user_type", type);
+                params.put("pref_input","0");
+                params.put("prof_id",prof_id);
+                return params;
+            }
+        };
+        loading.dismiss();
+        AppController.getInstance().addToRequestQueue(strRequest);
 
     }
 

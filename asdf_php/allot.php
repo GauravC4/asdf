@@ -210,7 +210,7 @@ if($conn){
 
     						array_push($prof_tried, $prof_id);
 
-    						$sql3 = 'SELECT * FROM prof_profile WHERE rank = "JS" AND no_of_duty != 0 AND prim="'.$prof_id.'" AND prim NOT IN (SELECT prof_id FROM prof_preferences WHERE pdate = "'.$edate.'" AND pslot = "'.$eslot.'" AND ptype != 1)'; 
+    						$sql3 = 'SELECT * FROM prof_profile WHERE rank = "JS" AND no_of_duty != 0 AND prim="'.$prof_id.'" AND prim NOT IN (SELECT prof_id FROM prof_preferences WHERE pdate = "'.$edate.'" AND pslot = "'.$eslot.'" AND ptype != 1 AND ptype != 0)'; 
 
     						$sql4 = 'SELECT * FROM allotment WHERE prof_id = "'.$prof_id.'" AND exam_id IN (SELECT prim  FROM exam WHERE edate="'.$edate.'") ';
 
@@ -261,7 +261,7 @@ if($conn){
 
     						array_push($prof_tried, $prof_id);
     						
-    						$sql3 = 'SELECT * FROM prof_profile WHERE rank = "SS" AND no_of_duty != 0 AND prim="'.$prof_id.'" AND prim NOT IN (SELECT prof_id FROM prof_preferences WHERE pdate = "'.$edate.'" AND pslot = "'.$eslot.'" AND ptype != 1)'; 
+    						$sql3 = 'SELECT * FROM prof_profile WHERE rank = "SS" AND no_of_duty != 0 AND prim="'.$prof_id.'" AND prim NOT IN (SELECT prof_id FROM prof_preferences WHERE pdate = "'.$edate.'" AND pslot = "'.$eslot.'" AND ptype != 1 AND ptype != 0)'; 
 
     						$sql4 = 'SELECT * FROM allotment WHERE prof_id = "'.$prof_id.'" AND exam_id IN (SELECT prim  FROM exam WHERE edate="'.$edate.'" AND eslot != "'.$eslot.'") ';
 
@@ -354,7 +354,7 @@ if($conn){
 
     						array_push($prof_tried, $prof_id); 
     						
-    						$sql3 = 'SELECT * FROM prof_profile WHERE rank = "JS" AND no_of_duty != 0 AND prim="'.$prof_id.'" AND prim NOT IN (SELECT prof_id FROM prof_preferences WHERE pdate = "'.$edate.'" AND pslot = "'.$eslot.'" AND ptype != 1)'; 
+    						$sql3 = 'SELECT * FROM prof_profile WHERE rank = "JS" AND no_of_duty != 0 AND prim="'.$prof_id.'" AND prim NOT IN (SELECT prof_id FROM prof_preferences WHERE pdate = "'.$edate.'" AND pslot = "'.$eslot.'" AND ptype != 1 AND ptype != 0)'; 
 
     						$sql4 = 'SELECT * FROM allotment WHERE prof_id = "'.$prof_id.'" AND exam_id IN (SELECT prim  FROM exam WHERE edate="'.$edate.'" AND eslot != "'.$eslot.'") ';
 
@@ -447,7 +447,7 @@ if($conn){
 
     						array_push($prof_tried, $prof_id); echo "<br>prof_tried : ".$prof_id;
     						
-    						$sql3 = 'SELECT * FROM prof_profile WHERE rank = "JS" AND no_of_duty != 0 AND prim="'.$prof_id.'" AND prim NOT IN (SELECT prof_id FROM prof_preferences WHERE pdate = "'.$edate.'" AND pslot = "'.$eslot.'" AND ptype != 1)'; 
+    						$sql3 = 'SELECT * FROM prof_profile WHERE rank = "JS" AND no_of_duty != 0 AND prim="'.$prof_id.'" AND prim NOT IN (SELECT prof_id FROM prof_preferences WHERE pdate = "'.$edate.'" AND pslot = "'.$eslot.'" AND ptype != 1 AND ptype != 0)'; 
 
     						$sql4 = 'SELECT * FROM allotment WHERE prof_id = "'.$prof_id.'" AND exam_id IN (SELECT prim  FROM exam WHERE edate="'.$edate.'" AND eslot != "'.$eslot.'") ';
 
