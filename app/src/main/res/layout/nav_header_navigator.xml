@@ -14,22 +14,10 @@
 
     <ImageView
         android:id="@+id/nav_header_logo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:maxHeight="100dp"
-        android:maxWidth="100dp"
         app:srcCompat="@mipmap/ic_launcher" />
-
-    <TextView
-        android:textSize="20dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="10dp"
-        android:text="ASDF"
-        android:textStyle="italic"
-        android:textColor="@android:color/white"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
     <TextView
         android:id="@+id/textView"

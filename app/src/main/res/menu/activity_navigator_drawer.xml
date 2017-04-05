@@ -21,19 +21,21 @@
 
         <item
             android:id="@+id/generate_notifications"
+            android:icon="@drawable/ic_notification"
             android:title="Generate Notifications" />
     </group>
 
-    <item android:title="Communicate">
+    <item android:title="Contact us">
         <menu>
             <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
+                android:id="@+id/nav_contact_1"
+                android:icon="@drawable/ic_contact"
+                android:title="Varun" />
+            
             <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
+                android:id="@+id/nav_contact_2"
+                android:icon="@drawable/ic_contact"
+                android:title="Nishad" />
         </menu>
     </item>
 

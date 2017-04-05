@@ -1,9 +1,13 @@
 package com.mrc.gaurav.asdf;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -33,6 +37,8 @@ public class Navigator extends AppCompatActivity
 
     NavigationView navigationView = null;
     Toolbar toolbar = null;
+    private final String varun ="8655964365";
+    private final String nishad ="8879332331";
     private String username;
     private String password;
     private String type;
@@ -249,8 +255,33 @@ public class Navigator extends AppCompatActivity
                 }
             }
 
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.nav_contact_1) {
+            Intent i = new Intent(Intent.ACTION_CALL);
+            i.setData(Uri.parse("tel:"+varun));
 
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+            {
+                if(checkSelfPermission(Manifest.permission.CALL_PHONE)!= PackageManager.PERMISSION_GRANTED)
+                {
+                    requestPermissions(new String[]{Manifest.permission.CALL_PHONE},10);
+                }
+            }
+
+            startActivity(i);
+        }
+
+        else if (id == R.id.nav_contact_2) {
+            Intent i = new Intent(Intent.ACTION_CALL);
+            i.setData(Uri.parse("tel:"+nishad));
+
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+            {
+                if(checkSelfPermission(Manifest.permission.CALL_PHONE)!= PackageManager.PERMISSION_GRANTED)
+                {
+                    requestPermissions(new String[]{Manifest.permission.CALL_PHONE},10);
+                }
+            }
+            startActivity(i);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
