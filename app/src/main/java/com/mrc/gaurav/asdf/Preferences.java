@@ -146,9 +146,20 @@ public class Preferences extends Fragment {
                 }else{*/
                 item.setCount(String.valueOf(i+1));
                 item.setPref_id(feedObj.getString("pref_id"));
-                item.setPref_date(feedObj.getString("pref_date"));
-                item.setPref_slot1_leave_pref(feedObj.getString("pref_slot1_leave_pref"));
-                item.setPref_slot2_leave_pref(feedObj.getString("pref_slot2_leave_pref"));
+                String tmp = feedObj.getString("pref_id");
+                if(tmp.equalsIgnoreCase("none"))
+                {
+                    item.setPref_date("2017-04-20");
+                    item.setPref_slot1_leave_pref("0");
+                    item.setPref_slot2_leave_pref("0");
+                }
+                else
+                {
+                    item.setPref_date(feedObj.getString("pref_date"));
+                    item.setPref_slot1_leave_pref(feedObj.getString("pref_slot1_leave_pref"));
+                    item.setPref_slot2_leave_pref(feedObj.getString("pref_slot2_leave_pref"));
+                }
+
                 //}
 
             }
